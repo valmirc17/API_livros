@@ -63,13 +63,13 @@ def init_app(app):
     @jwt_required()
     def favorite_book():
         data = request.get_json()
-        book_id = data.get('book_id')
+        id_livro = data.get('book_id')
         email = get_jwt_identity()
 
         if not mongo.db.users.find_one({'email': email}):
             return jsonify({'error': 'Usuário não encontrado!'}), 404
 
-        response = requests.get(f'https://www.googleapis.com/books/v1/volumes/{book_id}')
+        response = requests.get(f'https://www.googleapis.com/books/v1/volumes/{id_livro}')
         if response.status_code != 200:
             return jsonify({'error': 'Livro não encontrado'}), response.status_code
 
@@ -77,7 +77,7 @@ def init_app(app):
         volume_info = book.get('volumeInfo', {})
         favorite_data = {
             'email': email,
-            'id_livro': book_id,
+            'id_livro': id_livro,
             'titulo': volume_info.get('title'),
             'autores': volume_info.get('authors', []),
             'descricao': volume_info.get('description'),
