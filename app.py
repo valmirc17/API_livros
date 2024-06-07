@@ -3,8 +3,10 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 from models.database import mongo
 from controllers import routes
+from flask_cors import CORS
 
 app = Flask(__name__, template_folder='views')
+CORS(app)
 
 # Configuração do MongoDB URI
 # app.config['MONGO_URI'] = 'mongodb+srv://api_livros:zEiWficU9ohh185c@veridioculi.qqcq3.mongodb.net/api_livros'
